@@ -35,10 +35,10 @@ body.rtab #cmp,body.rtab .ctl{display:none}#rec{display:none}body.rtab #rec{disp
 <header><h1>CRM Attribute Comparison Guide</h1><span class="pass">Data pass 66 · updated 2026-10-10</span>
 <div class="gs ctl"><input id="gq" placeholder="Search all models (number or brand)…" autocomplete="off" aria-label="Search all models"><div class="list" id="gl"></div></div>
 <nav class="tabs"><button id="tb1" class="on">Compare</button><button id="tb2">Recalls</button></nav>
-<select id="cat" class="ctl" aria-label="Category"></select><label class="tg ctl"><input type="checkbox" id="donly"> Differences only</label><button id="share" class="ctl" style="font:inherit;border:0;border-radius:8px;padding:8px 12px;background:#1f2937;color:#cbd5e1;cursor:pointer">Copy link</button></header>
+<select id="cat" class="ctl" aria-label="Category"></select><label class="tg ctl"><input type="checkbox" id="donly"> Differences only</label><label class="tg ctl"><input type="checkbox" id="sall"> Show all attributes</label><span id="dc" class="ctl" style="font-size:12px;color:#9aa3b2"></span><button id="share" class="ctl" style="font:inherit;border:0;border-radius:8px;padding:8px 12px;background:#1f2937;color:#cbd5e1;cursor:pointer">Copy link</button></header>
 <main><div class="wrap" id="cmp"><table><thead><tr id="hd"></tr></thead><tbody id="bd"><tr><td class="ld">Loading…</td></tr></tbody></table></div>
 <section id="rec"><h2 style="margin:6px 0">FDA recalls &amp; advisories — Big Four CRM</h2><div id="recbody" class="ld">Loading recalls…</div></section></main>
-<footer id="ft"></footer><div id="pop" role="dialog"></div>
+<footer><div id="ft"></div><details style="text-align:left;max-width:900px;margin:10px auto"><summary>Which rows are hidden as "not applicable"?</summary><p>Rows are hidden only by device definition, never because a value is blank. A row is hidden only when it is not applicable to <i>every</i> selected model and none of them has a value in it; if any selected model has a value, the row is shown. Tick "Show all attributes" to see every row. Hidden rows are not counted as differences.</p><ul><li><b>Pacemaker, CRT-P, Leadless:</b> Max energy, ATP during charging, SVT discrimination (shock-therapy only).</li><li><b>ICM:</b> Max energy, connector ports, NBG/NBD code, CRT optimization, multipoint LV, LV quadripolar, pacing algorithms, capture management, rate-response sensor, ATP during charging, SVT discrimination.</li><li><b>Single-chamber (ICD single chamber incl. DX, single-chamber pacemakers, leadless, S-ICD/EV-ICD):</b> CRT optimization, multipoint LV pacing, LV quadripolar.</li><li><b>S-ICD/EV-ICD:</b> rate-response sensor (no rate-responsive bradycardia pacing). Other pacing rows are kept because EV-ICD provides ATP/pause-prevention pacing.</li><li>Noise/oversensing algorithms are never hidden (pacemakers have noise reversion too). Leads are never hidden.</li></ul></details></footer><div id="pop" role="dialog"></div>
 <script>
 const VER='22c1d41c',V=['Medtronic','Abbott','Boston Scientific','Biotronik'];let D=null,LS={},LST=null,RCD=null,sel=[null,null,null,null],qf=[{},{},{},{}];
 const $=s=>document.querySelector(s),esc=s=>String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
@@ -46,6 +46,16 @@ const val=(r,k)=>{const v=r[k];return v==null||String(v).trim()===''||/^null$/i.
 const lab=r=>(r.brand_name||'')+' — '+r.model_number,key=r=>r.manufacturer+'|'+r.model_number;
 const SEC=[['Overview',['manufacturer','brand_name','model_number','device_category','chamber_configuration','nbg_nbd_code','max_energy_joules','fda_pma_510k','commercial_status']],['Physical',['dimensions_mm','volume_cc','weight_g']],['Battery & longevity',['battery_chemistry','projected_longevity_years']],['MRI',['mri_status','field_strength_tesla']],['Connectors & leads',['connector_ports','telemetry_type']]];
 const QF={'MRI 3T':r=>/3/.test(val(r,'field_strength_tesla')||''),'Quad LV':r=>{const q=val(r,'f_lv_quadripolar');return q?/^yes/i.test(q):/IS4|IS-4/i.test(val(r,'connector_ports')||'')},'Bluetooth / remote':r=>/bluetooth|BLE/i.test(val(r,'telemetry_type')||'')||!!val(r,'f_remote_monitoring'),'Active US':r=>val(r,'commercial_status')==='Active'};
+
+const NA_PACER=['max_energy_joules','f_atp_during_charging','f_svt_discrimination'],NA_LV=['f_crt_optimization','f_multipoint_lv_pacing','f_lv_quadripolar'];
+const NA_ICM=['max_energy_joules','connector_ports','nbg_nbd_code','f_crt_optimization','f_multipoint_lv_pacing','f_lv_quadripolar','f_pacing_algorithms','f_capture_management','f_rate_response_sensor','f_atp_during_charging','f_svt_discrimination'];
+function NA(r){const c=r._cat,ch=String(r.chamber_configuration||'');const s=new Set();
+ if(c==='Pacemaker'||c==='CRT-P'||c==='Leadless pacemaker')NA_PACER.forEach(k=>s.add(k));
+ if(c==='ICM (loop recorder)')NA_ICM.forEach(k=>s.add(k));
+ if(c==='ICD — Single chamber'||c==='Leadless pacemaker'||c==='S-ICD / EV-ICD'||(c==='Pacemaker'&&/^(single|sr)\b/i.test(ch)))NA_LV.forEach(k=>s.add(k));
+ if(c==='S-ICD / EV-ICD')s.add('f_rate_response_sensor');return s}
+let showAll=localStorage.getItem('crm11-all')==='1';
+const hiddenRow=k=>{if(showAll)return false;const S=sel.filter(Boolean);return S.length>0&&S.every(r=>NA(r).has(k)&&val(r,k)==null)};
 let closed=JSON.parse(localStorage.getItem('crm11-closed')||'{}');
 const opts=(c,v,i)=>D.rows.filter(r=>r._cat===c&&r.manufacturer===v&&Object.keys(qf[i]||{}).every(q=>!qf[i][q]||QF[q](r))).sort((a,b)=>lab(a).localeCompare(lab(b)));
 function get(u){return fetch(u+'?v='+VER).then(r=>{if(!r.ok)throw new Error(u+' '+r.status);return r.json()})}
@@ -68,17 +78,17 @@ function header(){const c=$('#cat').value;$('#hd').innerHTML='<th class="attr">A
  document.querySelectorAll('.clr').forEach(b=>b.onclick=()=>{sel[+b.dataset.i]=null;refresh()});
  document.querySelectorAll('.qf button').forEach(b=>b.onclick=()=>{const i=+b.dataset.i;qf[i][b.dataset.q]=!qf[i][b.dataset.q];if(sel[i]&&!opts(c,V[i],i).includes(sel[i]))sel[i]=opts(c,V[i],i)[0]||null;refresh()})}
 function secRow(name,note){return `<tr class="sec${closed[name]?' closed':''}" data-s="${esc(name)}"><td class="attr">${esc(name)}</td><td colspan="4"><span class="cnt">${note||''}</span></td></tr>`}
-function table(){const c=$('#cat').value,isL=c==='Leads';let h='';
- const row=(k,s)=>{const vals=sel.map(r=>r?val(r,k):undefined),act=vals.filter(v=>v!==undefined),diff=act.length>1&&new Set(act.map(v=>v==null?'':v.toLowerCase())).size>1;
+function table(){const c=$('#cat').value,isL=c==='Leads';let h='',nh=0,nd=0;
+ const row=(k,s)=>{if(hiddenRow(k)){nh++;return ''}const vals=sel.map(r=>r?val(r,k):undefined),act=vals.filter(v=>v!==undefined),diff=act.length>1&&new Set(act.map(v=>v==null?'':v.toLowerCase())).size>1;if(diff)nd++;
   return `<tr class="${diff?'diff':'same'}" data-sec="${esc(s)}"${closed[s]?' hidden':''}><td class="attr">${esc(D.labels[k]||k)}</td>`+sel.map(r=>`<td data-f="${k}">${r?cellHTML(r,k):''}</td>`).join('')+'</tr>'};
  const used=new Set();
- SEC.forEach(([n,ks])=>{const f=ks.filter(k=>(isL?D.fields.lead:D.fields.gen).includes(k));f.forEach(k=>used.add(k));if(f.length)h+=secRow(n)+f.map(k=>row(k,n)).join('')});
+ SEC.forEach(([n,ks])=>{const f=ks.filter(k=>(isL?D.fields.lead:D.fields.gen).includes(k));f.forEach(k=>used.add(k));const rr=f.map(k=>row(k,n)).join('');if(rr)h+=secRow(n)+rr});
  const rest=(isL?D.fields.lead:D.fields.gen).filter(k=>!used.has(k)&&k!=='gudid_primary_di');if(rest.length)h+=rest.map(k=>row(k,'Overview')).join('');
- if(!isL){h+=secRow('Features & algorithms','From each model\'s own manual / labeling. — = not verified.')+D.fields.feat.filter(k=>k!=='f_feature_source').map(k=>row(k,'Features & algorithms')).join('');
+ if(!isL){const fr=D.fields.feat.filter(k=>k!=='f_feature_source').map(k=>row(k,'Features & algorithms')).join('');if(fr)h+=secRow('Features & algorithms','From each model\'s own manual / labeling. — = not verified.')+fr;
   h+=secRow('Longevity scenarios','Every vendor-reported scenario from model-named tables. Tap a row for conditions.')+`<tr class="same" data-sec="Longevity scenarios"${closed['Longevity scenarios']?' hidden':''}><td class="attr">Scenarios</td>`+sel.map((r,i)=>`<td class="ls" id="ls${i}">${r?(D.lsk.includes(key(r))?'<span class="m">Loading…</span>':'<span class="m">— no model-named table</span>'):''}</td>`).join('')+'</tr>'}
  h+=secRow('Recalls & advisories','FDA recalls / advisories listing this exact model number.*')+`<tr class="same" data-sec="Recalls & advisories"${closed['Recalls & advisories']?' hidden':''}><td class="attr">Recalls &amp; advisories</td>`+sel.map((r,i)=>`<td class="ls" id="rc${i}">${r?'<span class="m">Loading…</span>':''}</td>`).join('')+'</tr>'+
   `<tr class="same" data-sec="Recalls & advisories"${closed['Recalls & advisories']?' hidden':''}><td colspan="5" class="fn">* Matched only where FDA text lists the exact model/catalog number. "None found" is not proof a device was never recalled. ⓘ shows the source recorded for each value; values without a per-cell record show the row-level source if one exists.</td></tr>`;
- $('#bd').innerHTML=h;
+ $('#bd').innerHTML=h;$('#dc').textContent=nd+' difference'+(nd===1?'':'s')+(nh?' · '+nh+' n/a row'+(nh>1?'s':'')+' hidden':'');
  document.querySelectorAll('tr.sec').forEach(t=>t.onclick=()=>{const s=t.dataset.s;closed[s]=!closed[s];localStorage.setItem('crm11-closed',JSON.stringify(closed));t.classList.toggle('closed',closed[s]);document.querySelectorAll(`tr[data-sec="${CSS.escape(s)}"]`).forEach(x=>x.hidden=!!closed[s]);lazy()});
  lazy()}
 function lazy(){const c=$('#cat').value;
@@ -88,10 +98,10 @@ function lazy(){const c=$('#cat').value;
 function lsRow(x){const[l,y,mo,pct,amp,pw,imp,sh,dg,nt,src,pg]=x,S=LST,yr=(y?y+' yr':'')+(mo?(y?' ':'')+mo+' mo':'');
  const kv=[['Pacing',pct],['Output',amp],['Pulse width',pw&&(/ms/.test(pw)?pw:pw+' ms')],['Impedance',imp&&(/Ω|ohm/i.test(imp)?imp:imp+' Ω')],['Shocks / charges',S[sh]],['Diagnostics / telemetry',S[dg]],['Notes',S[nt]],['Source',S[src]+(pg?' p. '+pg:'')]].filter(a=>a[1]);
  return `<div class="sc"><details><summary><b>${esc(yr||'—')}</b>${esc(l)}</summary><div class="cd">${kv.map(a=>`<div><i>${esc(a[0])}:</i> ${esc(a[1])}</div>`).join('')}</div></details></div>`}
-function setHash(){const c=$('#cat').value;const h='c='+encodeURIComponent(c)+'&m='+sel.map(r=>r?encodeURIComponent(r.model_number):'').join(',');history.replaceState(null,'','#'+h)}
+function setHash(){const c=$('#cat').value;const h='c='+encodeURIComponent(c)+'&m='+sel.map(r=>r?encodeURIComponent(r.model_number):'').join(',')+(showAll?'&a=1':'');history.replaceState(null,'','#'+h)}
 function refresh(){header();table();setHash()}
 function setCat(keep){const c=$('#cat').value;qf=[{},{},{},{}];if(!keep)sel=V.map((v,i)=>opts(c,v,i)[0]||null);refresh()}
-function fromHash(){const p=new URLSearchParams(location.hash.slice(1));if(location.hash==='#recalls'){return 'recalls'}const c=p.get('c');if(!c||!D.order.includes(c))return false;$('#cat').value=c;const ms=(p.get('m')||'').split(',');sel=V.map((v,i)=>{const m=ms[i]&&decodeURIComponent(ms[i]);return m?D.rows.find(r=>r._cat===c&&r.manufacturer===v&&r.model_number===m)||null:null});qf=[{},{},{},{}];refresh();return true}
+function fromHash(){const p=new URLSearchParams(location.hash.slice(1));if(location.hash==='#recalls'){return 'recalls'}const c=p.get('c');if(p.has('a')){showAll=p.get('a')==='1';localStorage.setItem('crm11-all',showAll?'1':'0');$('#sall').checked=showAll}if(!c||!D.order.includes(c))return false;$('#cat').value=c;const ms=(p.get('m')||'').split(',');sel=V.map((v,i)=>{const m=ms[i]&&decodeURIComponent(ms[i]);return m?D.rows.find(r=>r._cat===c&&r.manufacturer===v&&r.model_number===m)||null:null});qf=[{},{},{},{}];refresh();return true}
 // global search
 function gsearch(){const q=$('#gq').value.trim().toLowerCase(),gl=$('#gl');if(q.length<2){gl.style.display='none';return}
  const res=D.rows.filter(r=>r.model_number.toLowerCase().includes(q)||(r.brand_name||'').toLowerCase().includes(q)).slice(0,40);
@@ -118,12 +128,13 @@ function tab(r){document.body.classList.toggle('rtab',r);$('#tb1').classList.tog
 get('data/core.json').then(d=>{D=d;
  D.order.forEach(c=>{if(D.rows.some(r=>r._cat===c))$('#cat').insertAdjacentHTML('beforeend',`<option>${esc(c)}</option>`)});
  $('#cat').onchange=()=>setCat(false);$('#donly').onchange=e=>document.body.classList.toggle('donly',e.target.checked);
+ $('#sall').checked=showAll;$('#sall').onchange=e=>{showAll=e.target.checked;localStorage.setItem('crm11-all',showAll?'1':'0');refresh()};
  $('#tb1').onclick=()=>tab(false);$('#tb2').onclick=()=>tab(true);$('#gq').oninput=gsearch;$('#gq').onfocus=gsearch;$('#gq').onblur=()=>setTimeout(()=>$('#gl').style.display='none',150);
  $('#gl').onmousedown=e=>{const t=e.target.closest('[data-k]');if(t)pick(D.rows[+t.dataset.k])};
  $('#share').onclick=()=>{setHash();(navigator.clipboard?navigator.clipboard.writeText(location.href):Promise.reject()).then(()=>{$('#share').textContent='Copied ✓';setTimeout(()=>$('#share').textContent='Copy link',1500)},()=>prompt('Copy this link',location.href))};
  const m=D.meta;$('#ft').innerHTML=`v1.1 preview · Dataset pass ${esc(m.pass)} · ${m.gens} generators · ${m.leads} leads · ${m.progs} programmers · built ${esc(m.built)}<br>Values verified from FDA (GUDID/PMA) and OEM manual sources. A blank (—) means not verified, not absent. ⓘ = recorded source. Longevity scenarios ${m.ls_rows} rows · Recalls ${m.rc} FDA records · ${m.ad} advisories.`;
  const h=fromHash();if(h==='recalls'){setCat(false);tab(true)}else if(!h)setCat(false);
  window.__ready=performance.now();document.body.dataset.ready='1'}).catch(e=>{$('#bd').innerHTML=`<tr><td class="ld">Could not load data (${esc(e.message)}). Check your connection and reload.</td></tr>`});
-window.addEventListener('hashchange',()=>{if(D&&location.hash!=='#recalls'){const p=new URLSearchParams(location.hash.slice(1));const want='c='+encodeURIComponent($('#cat').value)+'&m='+sel.map(r=>r?encodeURIComponent(r.model_number):'').join(',');if(location.hash.slice(1)!==want)fromHash()}});
+window.addEventListener('hashchange',()=>{if(D&&location.hash!=='#recalls'){const p=new URLSearchParams(location.hash.slice(1));const want='c='+encodeURIComponent($('#cat').value)+'&m='+sel.map(r=>r?encodeURIComponent(r.model_number):'').join(',')+(showAll?'&a=1':'');if(location.hash.slice(1)!==want)fromHash()}});
 if('serviceWorker' in navigator&&location.protocol.startsWith('http'))navigator.serviceWorker.register('sw.js').catch(()=>{});
 </script></body></html>
