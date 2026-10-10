@@ -1,6 +1,6 @@
 <!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>CRM Attribute Comparison Guide</title><link rel="icon" href="favicon.svg" type="image/svg+xml"><meta name="theme-color" content="#111827"><meta name="color-scheme" content="light">
-<link rel="preload" href="data/core.json?v=2ab5d9c5" as="fetch" crossorigin>
+<link rel="preload" href="data/core.json?v=98a9e70c" as="fetch" crossorigin>
 <style>
 :root{--bg:#f5f7fa;--card:#fff;--ink:#1d2433;--mut:#9aa3b2;--line:#e3e7ee;--acc:#2563eb;--diff:#fff6db}
 *{box-sizing:border-box}body{margin:0;font:14px/1.4 system-ui,-apple-system,Segoe UI,Roboto,sans-serif;background:var(--bg);color:var(--ink)}
@@ -55,7 +55,7 @@ body.rtab #cmp,body.rtab .ctl{display:none}#rec{display:none}body.rtab #rec{disp
 <section id="nom"><div id="nombody" class="ld">Loading nomenclature guide…</div></section></main>
 <footer><div id="ft"></div><details style="text-align:left;max-width:900px;margin:10px auto"><summary>Which rows are hidden as "not applicable"?</summary><p>Rows are hidden only by device definition, never because a value is blank. A row is hidden only when it is not applicable to <i>every</i> selected model and none of them has a value in it; if any selected model has a value, the row is shown. Tick "Show all attributes" to see every row. Hidden rows are not counted as differences.</p><ul><li><b>Pacemaker, CRT-P, Leadless:</b> Max energy, ATP during charging, SVT discrimination (shock-therapy only).</li><li><b>ICM:</b> Max energy, connector ports, NBG/NBD code, CRT optimization, multipoint LV, LV quadripolar, pacing algorithms, capture management, rate-response sensor, ATP during charging, SVT discrimination.</li><li><b>Single-chamber (ICD single chamber incl. DX, single-chamber pacemakers, leadless, S-ICD/EV-ICD):</b> CRT optimization, multipoint LV pacing, LV quadripolar.</li><li><b>S-ICD/EV-ICD:</b> rate-response sensor (no rate-responsive bradycardia pacing). Other pacing rows are kept because EV-ICD provides ATP/pause-prevention pacing.</li><li>Noise/oversensing algorithms are never hidden (pacemakers have noise reversion too). Leads are never hidden.</li></ul></details></footer><div id="pop" role="dialog"></div><div id="fdbg"></div><aside id="fd" role="dialog" aria-label="Model family" aria-hidden="true"><div id="fdh"><b id="fdt">Family</b><button id="fdx" type="button">Close ✕</button></div><div id="fdb"></div></aside>
 <script>
-const VER='2ab5d9c5',V=['Medtronic','Abbott','Boston Scientific','Biotronik'];let D=null,LS={},LST=null,RCD=null,sel=[null,null,null,null],qf=[{},{},{},{}];
+const VER='98a9e70c',V=['Medtronic','Abbott','Boston Scientific','Biotronik'];let D=null,LS={},LST=null,RCD=null,sel=[null,null,null,null],qf=[{},{},{},{}];
 const $=s=>document.querySelector(s),esc=s=>String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const val=(r,k)=>{const v=r[k];return v==null||String(v).trim()===''||/^null$/i.test(String(v).trim())?null:String(v).trim()};
 const lab=r=>(r.brand_name||'')+' — '+r.model_number,key=r=>r.manufacturer+'|'+r.model_number;
