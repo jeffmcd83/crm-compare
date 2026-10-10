@@ -1,6 +1,6 @@
 <!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>CRM Attribute Comparison Guide</title><link rel="icon" href="favicon.svg" type="image/svg+xml"><meta name="theme-color" content="#111827">
-<link rel="preload" href="data/core.json?v=22c1d41c" as="fetch" crossorigin>
+<link rel="preload" href="data/core.json?v=ba1e3620" as="fetch" crossorigin>
 <style>
 :root{--bg:#f5f7fa;--card:#fff;--ink:#1d2433;--mut:#9aa3b2;--line:#e3e7ee;--acc:#2563eb;--diff:#fff6db}
 *{box-sizing:border-box}body{margin:0;font:14px/1.4 system-ui,-apple-system,Segoe UI,Roboto,sans-serif;background:var(--bg);color:var(--ink)}
@@ -12,7 +12,7 @@ main{padding:14px;max-width:1400px;margin:auto}.wrap{overflow-x:auto;background:
 table{border-collapse:collapse;width:100%;min-width:900px}th,td{padding:8px 11px;border-bottom:1px solid var(--line);vertical-align:top;text-align:left}
 th.attr,td.attr{position:sticky;left:0;background:#fafbfc;font-weight:600;width:180px;min-width:140px;z-index:1}
 thead th{background:#fafbfc;vertical-align:top;width:22%}.vend{font-size:12px;text-transform:uppercase;letter-spacing:.05em;color:var(--acc);margin-bottom:6px;display:flex;justify-content:space-between;gap:6px}
-.vend button{border:0;background:none;color:var(--mut);cursor:pointer;font-size:12px}.cb{position:relative}.cb input{width:100%}
+.ce{display:flex;flex-wrap:wrap;gap:4px;margin-top:6px}.ce button{font:inherit;font-size:11px;font-weight:600;border:1px solid var(--line);background:#fff;border-radius:6px;padding:4px 8px;cursor:pointer;color:#334;touch-action:manipulation}.ce button:active{background:#eef3ff}.vend button{border:0;background:none;color:var(--mut);cursor:pointer;font-size:12px}.cb{position:relative}.cb input{width:100%}
 .list{position:absolute;top:100%;left:0;right:0;max-height:300px;overflow:auto;background:#fff;border:1px solid var(--line);border-radius:8px;box-shadow:0 8px 24px #0002;z-index:30;display:none;font-weight:400}
 .list div{padding:7px 10px;cursor:pointer}.list div:hover,.list div.on{background:#eef3ff}.list small{color:var(--mut)}.none{color:var(--mut);font-style:italic;font-weight:400}
 .qf{display:flex;flex-wrap:wrap;gap:4px;margin-top:6px}.qf button{font-size:11px;border:1px solid var(--line);background:#fff;border-radius:999px;padding:2px 8px;cursor:pointer;color:#445}.qf button.on{background:var(--acc);color:#fff;border-color:var(--acc)}
@@ -32,7 +32,7 @@ body.rtab #cmp,body.rtab .ctl{display:none}#rec{display:none}body.rtab #rec{disp
 .ld{padding:30px;text-align:center;color:var(--mut)}
 @media(max-width:700px){header{padding:10px}.gs{max-width:none;flex-basis:100%}nav.tabs{width:100%}nav.tabs button{flex:1}main{padding:6px}th.attr,td.attr{width:105px;min-width:105px;font-size:12px}table{min-width:760px}.lsb{max-height:300px}}
 </style></head><body>
-<header><h1>CRM Attribute Comparison Guide</h1><span class="pass">Data pass 66 · updated 2026-10-10</span>
+<header><h1>CRM Attribute Comparison Guide</h1><span class="pass">Data pass 67 · updated 2026-10-10</span>
 <div class="gs ctl"><input id="gq" placeholder="Search all models (number or brand)…" autocomplete="off" aria-label="Search all models"><div class="list" id="gl"></div></div>
 <nav class="tabs"><button id="tb1" class="on">Compare</button><button id="tb2">Recalls</button></nav>
 <select id="cat" class="ctl" aria-label="Category"></select><label class="tg ctl"><input type="checkbox" id="donly"> Differences only</label><label class="tg ctl"><input type="checkbox" id="sall"> Show all attributes</label><span id="dc" class="ctl" style="font-size:12px;color:#9aa3b2"></span><button id="share" class="ctl" style="font:inherit;border:0;border-radius:8px;padding:8px 12px;background:#1f2937;color:#cbd5e1;cursor:pointer">Copy link</button></header>
@@ -40,7 +40,7 @@ body.rtab #cmp,body.rtab .ctl{display:none}#rec{display:none}body.rtab #rec{disp
 <section id="rec"><h2 style="margin:6px 0">FDA recalls &amp; advisories — Big Four CRM</h2><div id="recbody" class="ld">Loading recalls…</div></section></main>
 <footer><div id="ft"></div><details style="text-align:left;max-width:900px;margin:10px auto"><summary>Which rows are hidden as "not applicable"?</summary><p>Rows are hidden only by device definition, never because a value is blank. A row is hidden only when it is not applicable to <i>every</i> selected model and none of them has a value in it; if any selected model has a value, the row is shown. Tick "Show all attributes" to see every row. Hidden rows are not counted as differences.</p><ul><li><b>Pacemaker, CRT-P, Leadless:</b> Max energy, ATP during charging, SVT discrimination (shock-therapy only).</li><li><b>ICM:</b> Max energy, connector ports, NBG/NBD code, CRT optimization, multipoint LV, LV quadripolar, pacing algorithms, capture management, rate-response sensor, ATP during charging, SVT discrimination.</li><li><b>Single-chamber (ICD single chamber incl. DX, single-chamber pacemakers, leadless, S-ICD/EV-ICD):</b> CRT optimization, multipoint LV pacing, LV quadripolar.</li><li><b>S-ICD/EV-ICD:</b> rate-response sensor (no rate-responsive bradycardia pacing). Other pacing rows are kept because EV-ICD provides ATP/pause-prevention pacing.</li><li>Noise/oversensing algorithms are never hidden (pacemakers have noise reversion too). Leads are never hidden.</li></ul></details></footer><div id="pop" role="dialog"></div>
 <script>
-const VER='22c1d41c',V=['Medtronic','Abbott','Boston Scientific','Biotronik'];let D=null,LS={},LST=null,RCD=null,sel=[null,null,null,null],qf=[{},{},{},{}];
+const VER='ba1e3620',V=['Medtronic','Abbott','Boston Scientific','Biotronik'];let D=null,LS={},LST=null,RCD=null,sel=[null,null,null,null],qf=[{},{},{},{}];
 const $=s=>document.querySelector(s),esc=s=>String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const val=(r,k)=>{const v=r[k];return v==null||String(v).trim()===''||/^null$/i.test(String(v).trim())?null:String(v).trim()};
 const lab=r=>(r.brand_name||'')+' — '+r.model_number,key=r=>r.manufacturer+'|'+r.model_number;
@@ -65,7 +65,7 @@ function rcl(c){return `<span class="rcl rc${esc(c)}">${c?'Class '+esc(c):'?'}</
 function src(r,k){if(r._p&&r._p[k]!=null)return['Source (this value)',D.ps[r._p[k]]];if(k.startsWith('f_')&&r._fs!=null)return['Feature source (row-level)',D.ps[r._fs]];if(r._rp!=null)return['Row source (added row)',D.ps[r._rp]];return null}
 function cellHTML(r,k){const v=val(r,k);if(v==null)return '<span class="m">—</span>';const s=src(r,k);return esc(v)+`<button class="i" data-r="${D.rows.indexOf(r)}" data-k="${k}" aria-label="Source" title="Source">ⓘ</button>`}
 function strip(r){if(!r)return '';const s=D.rs[key(r)]||[0,0,0,0],t=val(r,'field_strength_tesla'),bits=[`Class I recalls: ${s[1]?'<b>'+s[1]+'</b>':0}`,`Recalls: ${s[0]}`,`Open: ${s[2]}`];if(s[3])bits.push(`Advisories: ${s[3]}`);if(t)bits.push('MRI: '+esc(t.replace(' and ','/'))+'T');if(r._cat!=='Leads'&&QF['Quad LV'](r))bits.push('Quad LV');if(QF['Bluetooth / remote'](r))bits.push(/bluetooth|BLE/i.test((val(r,'telemetry_type')||'')+(val(r,'f_remote_monitoring')||''))?'Bluetooth/remote':'Remote');return bits.join(' · ')}
-function header(){const c=$('#cat').value;$('#hd').innerHTML='<th class="attr">Attribute</th>'+V.map((v,i)=>{const all=D.rows.filter(r=>r._cat===c&&r.manufacturer===v).length,o=opts(c,v,i);
+function header(){const c=$('#cat').value;$('#hd').innerHTML='<th class="attr">Attribute<div class="ce"><button id="xall" type="button">Expand all</button><button id="call" type="button">Collapse all</button></div></th>'+V.map((v,i)=>{const all=D.rows.filter(r=>r._cat===c&&r.manufacturer===v).length,o=opts(c,v,i);
  return `<th><div class="vend">${esc(v)} <span class="cnt">${o.length}${o.length!==all?'/'+all:''} models</span>${sel[i]?`<button data-i="${i}" class="clr">Clear ✕</button>`:''}</div>`+(all?`<div class="cb"><input data-i="${i}" placeholder="Search ${esc(v)}…" autocomplete="off" aria-label="${esc(v)} model"><div class="list"></div></div><div class="qf">${Object.keys(QF).filter(q=>c!=='Leads'||q==='MRI 3T'||q==='Active US').map(q=>`<button data-i="${i}" data-q="${q}" class="${qf[i][q]?'on':''}">${q}</button>`).join('')}</div><div class="strip">${strip(sel[i])}</div>`:'<div class="none">No models</div>')+'</th>'}).join('');
  document.querySelectorAll('.cb input').forEach(inp=>{const i=+inp.dataset.i,list=inp.nextElementSibling;inp.value=sel[i]?lab(sel[i]):'';
   const show=()=>{const q=inp.value.toLowerCase(),o=opts(c,V[i],i).filter(r=>!q||lab(r).toLowerCase().includes(q)||(sel[i]&&inp.value===lab(sel[i])));
@@ -75,8 +75,10 @@ function header(){const c=$('#cat').value;$('#hd').innerHTML='<th class="attr">A
    if(e.key==='ArrowDown'||e.key==='ArrowUp'){e.preventDefault();it[k]&&it[k].classList.remove('on');k=e.key==='ArrowDown'?Math.min(k+1,it.length-1):Math.max(k-1,0);it[k]&&(it[k].classList.add('on'),it[k].scrollIntoView({block:'nearest'}))}
    else if(e.key==='Enter'){const t=it[k]||it[0];t&&t.dispatchEvent(new MouseEvent('mousedown',{bubbles:true}))}else if(e.key==='Escape')inp.blur()};
   list.onmousedown=e=>{const t=e.target.closest('[data-k]');if(t){sel[i]=D.rows[+t.dataset.k];list.style.display='none';inp.blur();refresh()}}});
+ $('#xall').onclick=()=>setAllSec(false);$('#call').onclick=()=>setAllSec(true);
  document.querySelectorAll('.clr').forEach(b=>b.onclick=()=>{sel[+b.dataset.i]=null;refresh()});
  document.querySelectorAll('.qf button').forEach(b=>b.onclick=()=>{const i=+b.dataset.i;qf[i][b.dataset.q]=!qf[i][b.dataset.q];if(sel[i]&&!opts(c,V[i],i).includes(sel[i]))sel[i]=opts(c,V[i],i)[0]||null;refresh()})}
+function setAllSec(c){document.querySelectorAll('tr.sec').forEach(t=>{closed[t.dataset.s]=c;t.classList.toggle('closed',c)});['Overview','Physical','Battery & longevity','MRI','Connectors & leads','Features & algorithms','Longevity scenarios','Recalls & advisories'].forEach(s=>closed[s]=c);localStorage.setItem('crm11-closed',JSON.stringify(closed));document.querySelectorAll('#bd tr[data-sec]').forEach(x=>x.hidden=c);if(!c)lazy()}
 function secRow(name,note){return `<tr class="sec${closed[name]?' closed':''}" data-s="${esc(name)}"><td class="attr">${esc(name)}</td><td colspan="4"><span class="cnt">${note||''}</span></td></tr>`}
 function table(){const c=$('#cat').value,isL=c==='Leads';let h='',nh=0,nd=0;
  const row=(k,s)=>{if(hiddenRow(k)){nh++;return ''}const vals=sel.map(r=>r?val(r,k):undefined),act=vals.filter(v=>v!==undefined),diff=act.length>1&&new Set(act.map(v=>v==null?'':v.toLowerCase())).size>1;if(diff)nd++;
