@@ -1,5 +1,5 @@
 <!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>CRM Device Compare</title><style>
+<title>CRM Attribute Comparison Guide</title><style>
 :root{--bg:#f5f7fa;--card:#fff;--ink:#1d2433;--mut:#9aa3b2;--line:#e3e7ee;--acc:#2563eb;--diff:#fff6db}
 *{box-sizing:border-box}body{margin:0;font:14px/1.4 system-ui,-apple-system,Segoe UI,Roboto,sans-serif;background:var(--bg);color:var(--ink)}
 header{background:#111827;color:#fff;padding:14px 20px;display:flex;flex-wrap:wrap;gap:12px;align-items:center}
@@ -26,7 +26,7 @@ body.rtab #cmp,body.rtab .ctl{display:none}#rec{display:none}body.rtab #rec{disp
 #rt{min-width:820px;font-size:13px}#rt th{cursor:pointer;user-select:none;white-space:nowrap;background:#fafbfc;position:sticky;top:0}#rt td.rs{max-width:380px}.rwrap{max-height:75vh;overflow:auto}
 @media(max-width:700px){nav.tabs{width:100%}nav.tabs button{flex:1}#rt{font-size:12px}}
 </style></head><body>
-<header><h1>CRM Device Compare</h1><nav class="tabs"><button id="tb1" class="on">Compare</button><button id="tb2">Recalls</button></nav><select id="cat" class="ctl"></select><label class="tg ctl"><input type="checkbox" id="donly"> Show differences only</label></header>
+<header><h1>CRM Attribute Comparison Guide</h1><nav class="tabs"><button id="tb1" class="on">Compare</button><button id="tb2">Recalls</button></nav><select id="cat" class="ctl"></select><label class="tg ctl"><input type="checkbox" id="donly"> Show differences only</label></header>
 <main><div class="wrap" id="cmp"><table><thead><tr id="hd"></tr></thead><tbody id="bd"></tbody></table></div>
 <section id="rec"><h2 style="margin:6px 0">FDA recalls &amp; corrections — Big Four CRM</h2><div class="wrap"><table class="sum" id="rsum"></table></div>
 <div class="flt"><select id="fv"><option value="">All suppliers</option></select><select id="fy"><option value="">All years</option></select><select id="fc"><option value="">All classes</option><option>I</option><option>II</option><option>III</option></select><select id="fd"><option value="">All device types</option></select><select id="fs"><option value="">Open &amp; terminated</option><option>open</option><option>terminated</option></select><select id="ft2"><option value="">All types</option><option value="FDA">FDA recall records</option><option value="Advisory">Advisories (all)</option><option>Advisory: recall</option><option>Advisory: advisory</option><option>Advisory: safety communication</option></select><select id="fm"><option value="">Matched &amp; unmatched</option><option value="y">Matched to a model in app</option><option value="n">No exact model match</option></select><input id="fq" placeholder="Search model, reason, product…"></div>
