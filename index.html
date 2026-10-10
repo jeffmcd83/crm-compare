@@ -1,6 +1,6 @@
 <!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>CRM Attribute Comparison Guide</title><link rel="icon" href="favicon.svg" type="image/svg+xml"><meta name="theme-color" content="#111827"><meta name="color-scheme" content="light">
-<link rel="preload" href="data/core.json?v=34e0ead1" as="fetch" crossorigin>
+<link rel="preload" href="data/core.json?v=60dea406" as="fetch" crossorigin>
 <style>
 :root{--bg:#f5f7fa;--card:#fff;--ink:#1d2433;--mut:#9aa3b2;--line:#e3e7ee;--acc:#2563eb;--diff:#fff6db}
 *{box-sizing:border-box}body{margin:0;font:14px/1.4 system-ui,-apple-system,Segoe UI,Roboto,sans-serif;background:var(--bg);color:var(--ink)}
@@ -56,7 +56,25 @@ body.vstacked tbody tr:not([hidden]){display:block}body.donly.vstacked tbody tr.
 body.vstacked tbody td[data-v]::before{content:attr(data-v);display:inline-block;min-width:74px;margin-right:8px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.03em;border-radius:4px;padding:1px 5px;color:#fff;vertical-align:1px}
 td[data-v="Medtronic"]::before,#mini .mc[data-v="Medtronic"] b{--vc:#1d4ed8}td[data-v="Abbott"]::before{--vc:#b91c1c}td[data-v="Boston Scientific"]::before{--vc:#0f766e}td[data-v="Biotronik"]::before{--vc:#7e22ce}body.vstacked tbody td[data-v]::before{background:var(--vc,#475569)}
 body.vstacked tbody td[data-v="Boston Scientific"]::before{content:'BSC'}body.vstacked tbody tr.sec td.attr{background:#111827;color:#fff}body.vstacked tr.sec td{display:block}body.vstacked tr.sec td[colspan]{padding:0 12px 6px;background:#111827}body.vstacked td.ls{padding:4px 12px}body.vstacked .lsb{max-height:260px}
-@media(max-width:700px){body.vstacked main{padding:4px}}</style></head><body>
+@media(max-width:700px){body.vstacked main{padding:4px}}
+/* ---- theme v1.4 ---- */
+body.vcompact #bd td.attr{word-break:normal;overflow-wrap:break-word;hyphens:manual}body.vcompact #bd tr.sec td{text-transform:none;letter-spacing:0;font-size:11.5px}body.vcompact #bd tr.sec td.attr{white-space:nowrap;overflow:visible;z-index:2}
+body{font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans",sans-serif;-webkit-font-smoothing:antialiased}
+.wrap{border-radius:14px;border:1px solid #e5e7eb;box-shadow:0 1px 2px #0000000d,0 4px 14px #0000000a}
+#bd td{border-bottom:1px solid #eef0f3;background:#fff}#bd tr:nth-child(even) td{background:#f7f8fa}
+#bd td+td,#hd th+th{border-left:1px solid #e5e7eb}
+tr.diff td,tr.diff td.attr{background:inherit}#bd tr.diff td{background:#fff}#bd tr.diff:nth-child(even) td{background:#f7f8fa}
+#bd tr.diff td.attr{box-shadow:inset 3px 0 0 #f59e0b}#bd tr.diff td.attr::after{content:'';position:absolute;right:5px;top:50%;margin-top:-3px;width:6px;height:6px;border-radius:50%;background:#f59e0b}#bd td.attr{padding-right:14px}
+#bd tr.diff td[data-f]:not(.emp){background-image:linear-gradient(#fde68a2e,#fde68a2e)}
+#hd th{border-top:3px solid transparent}#hd th:nth-child(2){border-top-color:#1d4ed8}#hd th:nth-child(3){border-top-color:#b91c1c}#hd th:nth-child(4){border-top-color:#0f766e}#hd th:nth-child(5){border-top-color:#7e22ce}
+#hd th .vend{color:#334155}#hd th:nth-child(2) .vend{color:#1d4ed8}#hd th:nth-child(3) .vend{color:#b91c1c}#hd th:nth-child(4) .vend{color:#0f766e}#hd th:nth-child(5) .vend{color:#7e22ce}
+#mini .mc{border-top:3px solid #475569}#mini .mc[data-v="Medtronic"]{border-top-color:#3b82f6}#mini .mc[data-v="Abbott"]{border-top-color:#ef4444}#mini .mc[data-v="Boston Scientific"]{border-top-color:#14b8a6}#mini .mc[data-v="Biotronik"]{border-top-color:#a855f7}
+#bd tr.sec td{background:#1e293b;color:#f1f5f9;padding:7px 11px;font-size:12px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;border-bottom:0;border-left-color:#1e293b}#bd tr.sec td .cnt{color:#94a3b8;text-transform:none;letter-spacing:0;font-size:11.5px}
+#bd tr.sec+tr td{border-top:0}
+td.ls{vertical-align:top}.lsb,.rcb{max-height:220px!important;overflow:auto;padding-bottom:16px;-webkit-mask-image:linear-gradient(#000 calc(100% - 22px),transparent);mask-image:linear-gradient(#000 calc(100% - 22px),transparent);overscroll-behavior:contain}
+body.vstacked #bd td.attr,body.vstacked #bd tr.diff td.attr{background:#f1f5f9;position:relative}body.vstacked #bd tr.sec td.attr{background:#1e293b}body.vstacked #bd td+td{border-left:0}body.vstacked #bd tr:nth-child(even) td{background:#fafbfc}body.vstacked #bd tr:nth-child(even) td.attr{background:#eef1f5}
+body.vstacked #hd th+th{border-left:0}body.vstacked #hd th:not(.attr){border-top-width:3px;margin-top:4px}
+</style></head><body>
 <header><h1>CRM Attribute Comparison Guide</h1><span class="pass">Data pass 67 · updated 2026-10-10</span>
 <div class="gs ctl"><input id="gq" placeholder="Search all models (number or brand)…" autocomplete="off" aria-label="Search all models"><div class="list" id="gl"></div></div>
 <nav class="tabs"><button id="tb1" class="on">Device Comparison</button><button id="tb2">Recalls</button><button id="tb3">Nomenclature Guide</button></nav>
@@ -66,7 +84,7 @@ body.vstacked tbody td[data-v="Boston Scientific"]::before{content:'BSC'}body.vs
 <section id="nom"><div id="nombody" class="ld">Loading nomenclature guide…</div></section></main>
 <footer><div id="ft"></div><details style="text-align:left;max-width:900px;margin:10px auto"><summary>Which rows are hidden as "not applicable"?</summary><p>Rows are hidden only by device definition, never because a value is blank. A row is hidden only when it is not applicable to <i>every</i> selected model and none of them has a value in it; if any selected model has a value, the row is shown. Tick "Show all attributes" to see every row. Hidden rows are not counted as differences.</p><ul><li><b>Pacemaker, CRT-P, Leadless:</b> Max energy, ATP during charging, SVT discrimination (shock-therapy only).</li><li><b>ICM:</b> Max energy, connector ports, NBG/NBD code, CRT optimization, multipoint LV, LV quadripolar, pacing algorithms, capture management, rate-response sensor, ATP during charging, SVT discrimination.</li><li><b>Single-chamber (ICD single chamber incl. DX, single-chamber pacemakers, leadless, S-ICD/EV-ICD):</b> CRT optimization, multipoint LV pacing, LV quadripolar.</li><li><b>S-ICD/EV-ICD:</b> rate-response sensor (no rate-responsive bradycardia pacing). Other pacing rows are kept because EV-ICD provides ATP/pause-prevention pacing.</li><li>Noise/oversensing algorithms are never hidden (pacemakers have noise reversion too). Leads are never hidden.</li></ul></details></footer><div id="pop" role="dialog"></div><div id="fdbg"></div><aside id="fd" role="dialog" aria-label="Model family" aria-hidden="true"><div id="fdh"><b id="fdt">Family</b><button id="fdx" type="button">Close ✕</button></div><div id="fdb"></div></aside>
 <script>
-const VER='34e0ead1',V=['Medtronic','Abbott','Boston Scientific','Biotronik'];let D=null,LS={},LST=null,RCD=null,sel=[null,null,null,null],qf=[{},{},{},{}];
+const VER='60dea406',V=['Medtronic','Abbott','Boston Scientific','Biotronik'];let D=null,LS={},LST=null,RCD=null,sel=[null,null,null,null],qf=[{},{},{},{}];
 const $=s=>document.querySelector(s),esc=s=>String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const val=(r,k)=>{const v=r[k];return v==null||String(v).trim()===''||/^null$/i.test(String(v).trim())?null:String(v).trim()};
 const lab=r=>(r.brand_name||'')+' — '+r.model_number,key=r=>r.manufacturer+'|'+r.model_number;
