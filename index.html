@@ -1,6 +1,6 @@
 <!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>CRM Attribute Comparison Guide</title><link rel="icon" href="favicon.svg" type="image/svg+xml"><meta name="theme-color" content="#111827"><meta name="color-scheme" content="light">
-<link rel="preload" href="data/core.json?v=cd56a603" as="fetch" crossorigin>
+<link rel="preload" href="data/core.json?v=9f84eb59" as="fetch" crossorigin>
 <style>
 :root{--bg:#f5f7fa;--card:#fff;--ink:#1d2433;--mut:#9aa3b2;--line:#e3e7ee;--acc:#2563eb;--diff:#fff6db}
 *{box-sizing:border-box}body{margin:0;font:14px/1.4 system-ui,-apple-system,Segoe UI,Roboto,sans-serif;background:var(--bg);color:var(--ink)}
@@ -75,7 +75,7 @@ td.ls{vertical-align:top}.lsb,.rcb{max-height:220px!important;overflow:auto;padd
 body.vstacked #bd td.attr,body.vstacked #bd tr.diff td.attr{background:#f1f5f9;position:relative}body.vstacked #bd tr.sec td.attr{background:#1e293b}body.vstacked #bd td+td{border-left:0}body.vstacked #bd tr:nth-child(even) td{background:#fafbfc}body.vstacked #bd tr:nth-child(even) td.attr{background:#eef1f5}
 body.vstacked #hd th+th{border-left:0}body.vstacked #hd th:not(.attr){border-top-width:3px;margin-top:4px}
 </style></head><body>
-<header><h1>CRM Attribute Comparison Guide</h1><span class="pass">Data pass 70 · updated 2026-10-12</span>
+<header><h1>CRM Attribute Comparison Guide</h1><span class="pass">Data pass 71 · updated 2026-10-12</span>
 <div class="gs ctl"><input id="gq" placeholder="Search all models (number or brand)…" autocomplete="off" aria-label="Search all models"><div class="list" id="gl"></div></div>
 <nav class="tabs"><button id="tb1" class="on">Device Comparison</button><button id="tb2">Recalls</button><button id="tb3">Nomenclature Guide</button></nav>
 <select id="cat" class="ctl" aria-label="Category"></select><select id="view" class="ctl" aria-label="View"><option value="table">Table view</option><option value="compact">Compact view</option><option value="stacked">Stacked view</option></select><label class="tg ctl"><input type="checkbox" id="donly"> Differences only</label><label class="tg ctl"><input type="checkbox" id="sall"> Show all attributes</label><span id="dc" class="ctl" style="font-size:12px;color:#9aa3b2"></span><button id="share" class="ctl" style="font:inherit;border:0;border-radius:8px;padding:8px 12px;background:#1f2937;color:#cbd5e1;cursor:pointer">Copy link</button></header>
@@ -84,7 +84,7 @@ body.vstacked #hd th+th{border-left:0}body.vstacked #hd th:not(.attr){border-top
 <section id="nom"><div id="nombody" class="ld">Loading nomenclature guide…</div></section></main>
 <footer><div id="ft"></div><details style="text-align:left;max-width:900px;margin:10px auto"><summary>Which rows are hidden as "not applicable"?</summary><p>Rows are hidden only by device definition, never because a value is blank. A row is hidden only when it is not applicable to <i>every</i> selected model and none of them has a value in it; if any selected model has a value, the row is shown. Tick "Show all attributes" to see every row. Hidden rows are not counted as differences.</p><ul><li><b>Pacemaker, CRT-P, Leadless:</b> Max energy, ATP during charging, SVT discrimination (shock-therapy only).</li><li><b>ICM:</b> Max energy, connector ports, NBG/NBD code, CRT optimization, multipoint LV, LV quadripolar, pacing algorithms, capture management, rate-response sensor, ATP during charging, SVT discrimination.</li><li><b>Single-chamber (ICD single chamber incl. DX, single-chamber pacemakers, leadless, S-ICD/EV-ICD):</b> CRT optimization, multipoint LV pacing, LV quadripolar.</li><li><b>S-ICD/EV-ICD:</b> rate-response sensor (no rate-responsive bradycardia pacing). Other pacing rows are kept because EV-ICD provides ATP/pause-prevention pacing.</li><li>Noise/oversensing algorithms are never hidden (pacemakers have noise reversion too). Leads are never hidden.</li></ul></details></footer><div id="pop" role="dialog"></div><div id="fdbg"></div><aside id="fd" role="dialog" aria-label="Model family" aria-hidden="true"><div id="fdh"><b id="fdt">Family</b><button id="fdx" type="button">Close ✕</button></div><div id="fdb"></div></aside>
 <script>
-const VER='cd56a603',V=['Medtronic','Abbott','Boston Scientific','Biotronik'];let D=null,LS={},LST=null,RCD=null,sel=[null,null,null,null],qf=[{},{},{},{}];
+const VER='9f84eb59',V=['Medtronic','Abbott','Boston Scientific','Biotronik'];let D=null,LS={},LST=null,RCD=null,sel=[null,null,null,null],qf=[{},{},{},{}];
 const $=s=>document.querySelector(s),esc=s=>String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const val=(r,k)=>{const v=r[k];return v==null||String(v).trim()===''||/^null$/i.test(String(v).trim())?null:String(v).trim()};
 const lab=r=>(r.brand_name||'')+' — '+r.model_number,key=r=>r.manufacturer+'|'+r.model_number;
