@@ -8,7 +8,7 @@ Live: https://jeffmcd83.github.io/crm-compare/  ·  Written 2026-10-14
 - **Offline:** `sw.js` (network-first, cache fallback; cache name changes each release) + `manifest.webmanifest` (installable to home screen).
 
 ## Data rules
-Verified sources only, naming the exact model/catalog number; every value links to its source; blanks stay blank; conflicts are logged, never overwritten. See STANDING_DECISIONS.md.
+Verified sources only, naming the exact model/catalog number; every value links to its source; blanks stay blank; conflicts are logged, never overwritten. International-only models stay blank unless verified from an official manufacturer source; third-party mirrors (e.g., silo.tips) are not acceptable (Jeff, 2026-11-18). See STANDING_DECISIONS.md.
 
 ## How it's updated (deploy safety)
 - **Data pass deploy:** `/workspace/crm-specs/sources/deploy_pass.sh N TAG "message"` — rebuilds, serves locally, runs `app/test_v11.py`; any failure/crash/server-not-ready => exit 1, nothing committed or pushed.
