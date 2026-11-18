@@ -1,5 +1,5 @@
-const P='crm-preview-',C="crm-preview-v1.8.19-292c9bf6";
-const PRE=["./","./index.html","./manifest.webmanifest","./favicon.svg","./icons/apple-touch-icon.png","./icons/icon-192.png","./icons/icon-512-maskable.png","./icons/icon-512.png","./data/core.json?v=292c9bf6","./data/ls-medtronic.json?v=292c9bf6","./data/ls-abbott.json?v=292c9bf6","./data/ls-boston-scientific.json?v=292c9bf6","./data/ls-biotronik.json?v=292c9bf6","./data/nomen.json?v=292c9bf6","./data/recalls.json?v=292c9bf6","./vendor/pptxgen.bundle.js?v=292c9bf6"];
+const P='crm-preview-',C="crm-preview-v1.8.20-1ab4b95b";
+const PRE=["./","./index.html","./manifest.webmanifest","./favicon.svg","./icons/apple-touch-icon.png","./icons/icon-192.png","./icons/icon-512-maskable.png","./icons/icon-512.png","./data/core.json?v=1ab4b95b","./data/ls-medtronic.json?v=1ab4b95b","./data/ls-abbott.json?v=1ab4b95b","./data/ls-boston-scientific.json?v=1ab4b95b","./data/ls-biotronik.json?v=1ab4b95b","./data/nomen.json?v=1ab4b95b","./data/recalls.json?v=1ab4b95b","./vendor/pptxgen.bundle.js?v=1ab4b95b"];
 self.addEventListener('install',e=>{e.waitUntil(caches.open(C).then(c=>c.addAll(PRE)))});
 self.addEventListener('activate',e=>e.waitUntil(caches.keys().then(k=>Promise.all(k.filter(x=>(x.startsWith(P)&&x!==C)||x.startsWith('crm-v11-')).map(x=>caches.delete(x)))).then(()=>self.clients.claim())));
 self.addEventListener('message',e=>{if(e.data==='skipWaiting'||(e.data&&e.data.type==='skipWaiting'))self.skipWaiting()});
