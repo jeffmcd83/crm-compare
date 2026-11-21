@@ -23,3 +23,11 @@ Off-box backup of working files (CSVs, scripts, logs, STANDING_DECISIONS, PDF ma
 
 ## If the bot is gone
 The site keeps serving as-is from GitHub Pages. To maintain: clone this repo, restore working files from the backup repo into `/workspace/`, run the build + gate commands above (needs Python 3, openpyxl, playwright + Chrome).
+
+## Device photos (2026-11-20) — built, NOT live; all vendors withheld on terms
+- Images: /workspace/crm-specs/app/img/*.webp (55 thumbs, ~201 KB); per-model sources in /workspace/crm-specs/crm-device-images.csv; log in /workspace/crm-specs/sources/images/IMAGES_LOG.md (script assign.py).
+- Wiring: build_v11 adds rows[]._im + core.im and copies/precaches img/ only when the template contains `data-img-on` (app/template_img.html). app/PREVIEW_TPL (= template_img.html) makes preview builds (incl. deploy_pass/daily routine) use it; root still uses template_v12.html.
+- app/IMG_WITHHOLD lists vendors whose photos are excluded. Currently all four (Abbott, Boston Scientific, Biotronik, Medtronic): their site terms allow only personal/informational/non-commercial use and forbid reposting/modifying or using graphics apart from their text without written permission. Remove a vendor line only after written permission.
+- To go live later: remove vendor(s) from IMG_WITHHOLD, switch root template to template_img.html in build_app.py, run deploy_pass.sh + app/gate.sh.
+- Rollback: delete app/PREVIEW_TPL (preview back to v12) and rebuild; build_app.pre-images.py / build_v11.pre-images.py are the pre-change backups.
+- Note: the 55 thumbnails remain in git history (commit bfa5236) though removed from the served preview.
